@@ -1,4 +1,4 @@
-# MERN STACK SIMPLE APP AUTHENTICATION WITH JWT & PASSPORT
+# SIMPLE APP AUTHENTICATION WITH JWT & PASSPORT
 
 ![Final App](https://i.postimg.cc/tybZb8dL/final-MERNAuth.gif)
 Minimal full-stack MERN app with authentication using passport and JWTs.
