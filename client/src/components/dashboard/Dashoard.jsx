@@ -42,7 +42,7 @@ class Dashboard extends Component {
   }
 }
 
-Dashboard.PropTypes = {
+Dashboard.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
