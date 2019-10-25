@@ -19,7 +19,6 @@ export default function SearchBox({ goToSearchPage, handleChange }) {
               onClick={goToSearchPage}
             >
               <i className="glyphicon glyphicon-search"></i>
-              {/* <img src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png" /> */}
             </button>
           </form>
         </div>

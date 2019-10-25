@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/authActions";
-import PokemonList from "../pokemon/PokemonList2";
+import PokemonList from "../pokemon/PokemonList";
 
 class Dashboard extends Component {
   onLogoutClick = e => {
@@ -37,7 +37,6 @@ class Dashboard extends Component {
                   borderRadius: "3px",
                   letterSpacing: "1.5px",
                   marginTop: "1rem"
-                  // height: "30px"
                 }}
                 onClick={this.onLogoutClick}
                 className="btn btn-large waves-effect waves-light hoverable blue accent-3 mt-auto mb-auto"

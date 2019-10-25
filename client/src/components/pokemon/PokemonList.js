@@ -1,26 +1,65 @@
-import React, { Component } from "react";
-// import "bootstrap/dist/css/bootstrap.min.css"
+import React, { useState, useEffect } from "react";
+
 import PokemonCard from "./PokemonCard";
 import Loading from "../layout/Loading";
 import axios from "axios";
+import Pagination from "./Pagination";
+import Search from "./Search";
 
-export default class PokemonList extends Component {
-  state = {
-    url: "https://pokeapi.co/api/v2/pokemon/",
-    pokemon: null
-  };
+export default function PokemonList() {
+  const [pokemon, setPokemon] = useState([]);
+  const [currentPageUrl, setCurrentPageUrl] = useState(
+    "https://pokeapi.co/api/v2/pokemon"
+  );
+  const [nextPageUrl, setNextPageUrl] = useState();
+  const [prevPageUrl, setPrevPageUrl] = useState();
+  const [searchPageUrl, setSearchPageUrl] = useState();
+  const [loading, setLoading] = useState(true);
 
-  async componentDidMount() {
-    const res = await axios.get(this.state.url);
-    this.setState({ pokemon: res.data["results"] });
+  useEffect(() => {
+    setLoading(true);
+    let cancel;
+    axios
+      .get(currentPageUrl, {
+        cancelToken: new axios.CancelToken(c => (cancel = c))
+      })
+      .then(res => {
+        setLoading(false);
+        setNextPageUrl(res.data.next);
+        setPrevPageUrl(res.data.previous);
+        setPokemon(res.data.results);
+      });
+
+    return () => cancel();
+  }, [currentPageUrl]);
+
+  function gotoNextPage() {
+    setCurrentPageUrl(nextPageUrl);
   }
 
-  render() {
-    return (
+  function gotoPrevPage() {
+    setCurrentPageUrl(prevPageUrl);
+  }
+
+  function handleChange(e) {
+    setSearchPageUrl(
+      `http://localhost/api/pokemon/search?filter=${e.target.value}`
+    );
+  }
+
+  function gotoSearchPage() {
+    setCurrentPageUrl(searchPageUrl);
+  }
+
+  if (loading) return "Loading...";
+
+  return (
+    <>
+      <Search gotoSearchPage={gotoSearchPage} handleChange={handleChange} />
       <div>
-        {this.state.pokemon ? (
+        {pokemon ? (
           <div className="row">
-            {this.state.pokemon.map(pokemon => (
+            {pokemon.map(pokemon => (
               <PokemonCard
                 key={pokemon.name}
                 name={pokemon.name}
@@ -32,6 +71,12 @@ export default class PokemonList extends Component {
           <Loading />
         )}
       </div>
-    );
-  }
+      <Pagination
+        gotoNextPage={nextPageUrl ? gotoNextPage : null}
+        gotoPrevPage={prevPageUrl ? gotoPrevPage : null}
+      />
+    </>
+  );
 }
+
+// export default PokemonList;
